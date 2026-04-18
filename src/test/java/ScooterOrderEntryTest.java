@@ -1,26 +1,32 @@
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import pages.MainPage;
 
-import static util.Constants.MAIN_PAGE_URL;
-import static util.Constants.ORDER_PAGE_URL;
+import static util.Constants.*;
 
+@RunWith(Parameterized.class)
 public class ScooterOrderEntryTest extends BaseTest{
-    @Test
-    public void scooterOrderHeaderTest()
-    {
-        driver.get(MAIN_PAGE_URL);
-        MainPage mainPage= new MainPage(driver);
-        mainPage.clickButtonOrderHeader();
-        Assert.assertEquals(ORDER_PAGE_URL, driver.getCurrentUrl());
+private final String entryChoice;
+
+    public ScooterOrderEntryTest(String entryChoice) {
+        this.entryChoice = entryChoice;
     }
 
+    @Parameterized.Parameters
+    public static Object[][] getData() {
+        return new Object[][]{
+                {HEADER},
+                {MAIN}
+        };
+    }
     @Test
-    public void scooterOrderMainTest()
+    public void scooterOrderEntryTest()
     {
         driver.get(MAIN_PAGE_URL);
         MainPage mainPage= new MainPage(driver);
-        mainPage.clickButtonOrderMain();
+        mainPage.clickButtonOrder(entryChoice);
         Assert.assertEquals(ORDER_PAGE_URL, driver.getCurrentUrl());
     }
 }

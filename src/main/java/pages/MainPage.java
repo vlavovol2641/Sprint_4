@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static util.Constants.EXPLICIT_WAIT;
+import static util.Constants.*;
 
 public class MainPage {
     private final WebDriver driver;
@@ -30,16 +30,20 @@ public class MainPage {
 
 
 
-    //нажатие на кнопку Заказать в шапке сайта
-    public void clickButtonOrderHeader() {
-    driver.findElement(buttonOrderHeader).click();
-    }
+
     //нажатие на кнопку Заказать в теле страницы сайта
-    public void clickButtonOrderMain() {
-        WebElement element = driver.findElement(buttonOrderMain);
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
-        new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT)).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(buttonOrderMain));
-        driver.findElement(buttonOrderMain).click();
+    public void clickButtonOrder(String entryChoice) {
+        if (entryChoice.equals(HEADER))
+        {
+            driver.findElement(buttonOrderHeader).click();
+        }
+        else if ((entryChoice.equals(MAIN)))
+        {
+            WebElement element = driver.findElement(buttonOrderMain);
+            ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
+            new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT)).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(buttonOrderMain));
+            driver.findElement(buttonOrderMain).click();
+        }
     }
     //скролл до блока "Вопросы о важном"
     public void scrollFaqBlock() {
@@ -54,7 +58,7 @@ public class MainPage {
     //получение ответа
     public String getFaqAnswer(){
         String questionId = driver.findElement(faqAnswer).getAttribute("id");
-        String answerIdSelector = "#accordion__panel-"+questionId.substring(19);
+        String answerIdSelector = "#accordion__panel-"+questionId.replace("accordion__heading-", "");
         new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT)).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(answerIdSelector)));
         return driver.findElement(By.cssSelector(answerIdSelector)).getText();
     }

@@ -1,8 +1,7 @@
 package util;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,9 +17,9 @@ public class DriverFactory {
         switch (browserType)
         {
             case CHROME:
-                return new ChromeDriver();
+            {return WebDriverManager.chromedriver().create();}
             case FIREFOX:
-                return new FirefoxDriver();
+            {return WebDriverManager.firefoxdriver().create();}
             default:
                 throw new RemoteException("Browser undefined");
         }
